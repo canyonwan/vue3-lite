@@ -15,6 +15,4 @@ export function reactive(raw: any) {
       return true
     }
   })
-
-  
 }
