@@ -2,8 +2,9 @@ import { describe, expect, test } from "vitest";
 import { reactive } from "../reactive";
 import { effect } from "../reactivity/effect";
 
-describe("test", () => {
-  test("test", () => {
+describe('test effect', () => {
+  // 这里说要测试 当响应式对象触发getter或settter的时候, effect里的函数会call
+  test('effect fn should self-executing ', () => {
     const user = reactive({ name: 'canyonwan', age: 1 })
     let nextAge: number = 0
 

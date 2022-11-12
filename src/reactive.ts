@@ -3,6 +3,7 @@
 import { track } from "./effect"
 
 // raw为原始对象 let raw = { age: 1 }
+// raw会通过 reactive 或 ref 对原始数据做一层代理，借助 effect 收集依赖，在原始数据改变的时候，去触发依赖，也就是自动执行一遍 effect 的函数
 export function reactive(raw: any) {
   return new Proxy(raw, {
     get(target, key) {

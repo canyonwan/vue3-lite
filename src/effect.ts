@@ -21,6 +21,13 @@ export function effect(fn: Function) {
 
 // target收集用户创建的所有reactive包裹的对象({} | [])
 // targetMap的结构是: targetMap = { target: { key: [effect1, effect2] } }, targetMap: WeakMap<object, Map<string, ReactiveEffect[]>>
+// targetMap: {
+//   // key 是对象，value 是 depsMap
+//   {age: 25} : {
+//     // key 是对象里边的 key， value 是 dep
+//     age: [ ...此处存储一个个依赖 ]
+//   }
+// }
 // - 通俗的来讲: targetMap是一个对象, 里面有一个key(属性)是target -> 值是一个Map, 里面有一个属性key(用户访问的对象属性,如{age: 18}的age) -> 值是一个数组, 数组里面收集的所有依赖
 // -- 如effect1和effect2
 // WeakMap 对象是一组键/值对的集合，其中的键是弱引用的。其键必须是对象，而值可以是任意的。
