@@ -7,6 +7,7 @@ describe("test", () => {
     const user = reactive({ name: 'canyonwan', age: 1 })
     let nextAge: number = 0
 
+    // 依赖
     effect(() => {
       nextAge = user.age + 1
     })

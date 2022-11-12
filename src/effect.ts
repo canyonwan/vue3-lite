@@ -40,6 +40,5 @@ export function track(target: Object, key: string | symbol) {
     deps = new Set()
     depsMap.set(key, deps)
   }
-  // deps是Set集合, 将所有的effect收集起来
   deps.add(currentEffect)
 }
