@@ -6,7 +6,7 @@ class ReactiveEffect {
   // 类的方法
   run() {
     currentEffect = this;
-    this._fn()
+    return this._fn() // 当调用用户传入的fn的时候, 将_fn的返回值return出去
   }
 }
 
@@ -16,7 +16,8 @@ let currentEffect: ReactiveEffect | null = null
 // 我们希望当调用effect里的方法的时候调用effect里的fn
 export function effect(fn: Function) {
   const _effect = new ReactiveEffect(fn)
-  _effect.run()
+  _effect.run() // 当调用run的时候还需要将当前的fn返回,意思就是调用内部fn会return fn
+  return _effect.run.bind(_effect) // 以当前的_effect实例为this的指向
 }
 
 // target收集用户创建的所有reactive包裹的对象({} | [])
