@@ -1,11 +1,15 @@
 class ReactiveEffect {
   private _fn: Function
-  constructor(fn: Function) {
+  public options: any
+
+  constructor(fn: Function, options: any) {
     this._fn = fn
+    this.options = options
   }
+
   // 类的方法
   run() {
-    currentEffect = this;
+    currentEffect = this
     return this._fn() // 当调用用户传入的fn的时候, 将_fn的返回值return出去
   }
 }
@@ -14,8 +18,8 @@ let currentEffect: ReactiveEffect | null = null
 
 // 收集依赖, 自动执行
 // 我们希望当调用effect里的方法的时候调用effect里的fn
-export function effect(fn: Function) {
-  const _effect = new ReactiveEffect(fn)
+export function effect(fn: Function, options: any = {}) {
+  const _effect = new ReactiveEffect(fn, options)
   _effect.run() // 当调用run的时候还需要将当前的fn返回,意思就是调用内部fn会return fn
   return _effect.run.bind(_effect) // 以当前的_effect实例为this的指向
 }
@@ -33,7 +37,7 @@ export function effect(fn: Function) {
 // -- 如effect1和effect2
 // WeakMap 对象是一组键/值对的集合，其中的键是弱引用的。其键必须是对象，而值可以是任意的。
 // - 这意味着在没有其他引用存在时垃圾回收能正确进行
-const targetsMap = new WeakMap() 
+const targetsMap = new WeakMap()
 export function track(target: Object, key: string | symbol) {
   // targetsMap通过key获取到所有的depsMap
   let depsMap = targetsMap.get(target)

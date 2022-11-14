@@ -1,6 +1,6 @@
-import { describe, expect, test } from "vitest";
-import { effect } from "../reactivity/effect";
-import { reactive } from "../reactivity/reactive";
+import { describe, expect, test, vitest } from 'vitest'
+import { effect } from '../reactivity/effect'
+import { reactive } from '../reactivity/reactive'
 
 describe('test effect', () => {
   // 这里说要测试 当响应式对象触发getter或settter的时候, effect里的函数会call
@@ -30,7 +30,7 @@ describe('test effect', () => {
       return 'runner foo'
     })
 
-    // 我希望第一次会执行到effect里的函数 
+    // 我希望第一次会执行到effect里的函数
     //  一开始我们希望foo是2
     expect(foo).toBe(2)
 
@@ -40,6 +40,37 @@ describe('test effect', () => {
 
     // 主动调用runner会拿到返回值
     expect(run).toBe('runner foo')
-
   })
-});
+
+  test('effect fn should not be called when it has scheduler option', () => {
+    // effect 会默认执行一次, 但是如果传入了scheduler, 当响应式对象变化时不会再次执行effect fn, 只会执行scheduler
+    let dummy: number = 0
+    let run: any
+    const user = reactive({ name: 'canyonwan', age: 1 })
+    const scheduler = vitest.fn(() => {
+      run = runner
+    })
+
+    const runner = effect(
+      () => {
+        dummy = user.age + 1
+      },
+      {
+        scheduler,
+      }
+    )
+
+    // 一开始scheduler不会执行
+    expect(scheduler).not.toBeCalled()
+    // 一开始只会执行effect fn一次
+    expect(user.age).toBe(2)
+    // 当更新响应式对象的时候不会执行effect fn , 只会执行scheduler
+    user.age++
+    // 当有了scheduler的时候, effect fn不会再次执行
+    expect(scheduler).toBeCalledTimes(1)
+    expect(dummy).toBe(2)
+    // 当主动调用runner的时候执行scheduler里被赋值的run
+    run()
+    expect(dummy).toBe(3)
+  })
+})
