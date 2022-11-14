@@ -63,7 +63,7 @@ describe('test effect', () => {
     // 一开始scheduler不会执行
     expect(scheduler).not.toBeCalled()
     // 一开始只会执行effect fn一次
-    expect(user.age).toBe(2)
+    expect(dummy).toBe(2)
     // 当更新响应式对象的时候不会执行effect fn , 只会执行scheduler
     user.age++
     // 当有了scheduler的时候, effect fn不会再次执行

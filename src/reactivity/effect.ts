@@ -1,13 +1,10 @@
 class ReactiveEffect {
   private _fn: Function
-  public options: any
 
-  constructor(fn: Function, options: any) {
+  constructor(fn: Function, public options: any) {
     this._fn = fn
-    this.options = options
   }
 
-  // 类的方法
   run() {
     currentEffect = this
     return this._fn() // 当调用用户传入的fn的时候, 将_fn的返回值return出去
@@ -60,7 +57,9 @@ export function track(target: Object, key: string | symbol) {
 export function trigger(target: Object, key: string | symbol) {
   let depsMap = targetsMap.get(target)
   let deps = depsMap.get(key)
-  for (const dep of deps) {
-    dep.run()
+  for (const effect of deps) {
+    const { scheduler, run } = effect.options
+    if (scheduler) scheduler()
+    else run()
   }
 }
