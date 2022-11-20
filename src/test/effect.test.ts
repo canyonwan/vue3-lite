@@ -70,7 +70,7 @@ describe('test effect', () => {
     expect(scheduler).toBeCalledTimes(1)
     expect(dummy).toBe(2)
     // 当主动调用runner的时候执行scheduler里被赋值的run
-    run()
+    run() // 执行run之所以下面的dummy会变成3, 是因为run里执行了runner, runner里执行了effect fn
     expect(dummy).toBe(3)
   })
 })
