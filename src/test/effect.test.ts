@@ -73,4 +73,23 @@ describe('test effect', () => {
     run() // 执行run之所以下面的dummy会变成3, 是因为run里执行了runner, runner里执行了effect fn
     expect(dummy).toBe(3)
   })
+
+  test('stop fn', () => {
+    let dummy: number = 0
+    const obj = reactive({ foo: 1 })
+    const runner = effect(() => {
+      dummy =  obj.foo + 1
+    })
+    // 首次进入执行一次effect
+    expect(dummy).toBe(2)
+
+    obj.foo++
+    // 执行stop, 会停止effect
+    stop(runner)
+    // - dummy不会增加
+    expect(dummy).toBe(2)
+    // 执行runner 会再次执行effect
+    runner()
+    expect(dummy).toBe(3)
+  })
 })
