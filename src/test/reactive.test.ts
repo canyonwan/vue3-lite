@@ -1,5 +1,5 @@
-import { describe, expect, test } from "vitest";
-import { reactive } from "../reactive";
+import { describe, expect, test } from "vitest"
+import { reactive } from "../reactivity/reactive"
 
 describe('reactive', () => {
   test('happy path', () => {
