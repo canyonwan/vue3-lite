@@ -15,6 +15,7 @@ let currentEffect: ReactiveEffect | null = null
 
 // 收集依赖, 自动执行
 // 我们希望当调用effect里的方法的时候调用effect里的fn
+// options: 为传入的配置
 export function effect(fn: Function, options: any = {}) {
   const _effect = new ReactiveEffect(fn, options)
   _effect.run() // 当调用run的时候还需要将当前的fn返回,意思就是调用内部fn会return fn
