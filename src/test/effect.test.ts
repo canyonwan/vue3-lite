@@ -78,13 +78,14 @@ describe('test effect', () => {
     let dummy: number = 0
     const obj = reactive({ foo: 1 })
     const runner = effect(() => {
-      dummy =  obj.foo + 1
+      dummy = obj.foo + 1
     })
     // 首次进入执行一次effect
     expect(dummy).toBe(2)
 
     obj.foo++
     // 执行stop, 会停止effect
+    // 添加stop方法
     stop(runner)
     // - dummy不会增加
     expect(dummy).toBe(2)
